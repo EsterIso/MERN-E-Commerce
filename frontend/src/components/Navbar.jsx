@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { PlusSquareIcon } from "@chakra-ui/icons"
 import { IoMoon } from "react-icons/io5"
 import { LuSun } from "react-icons/lu"
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 const Navbar = () => {
   const {colorMode, toggleColorMode } = useColorMode();
@@ -37,6 +38,14 @@ const Navbar = () => {
       <Button onClick={toggleColorMode}>
         {colorMode === "light" ? <IoMoon/> : <LuSun size="20"/>}
       </Button>
+      <SignedOut>
+        <Button>
+          <SignInButton />
+        </Button>
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
     </HStack>
   </Flex>
   </Container>
