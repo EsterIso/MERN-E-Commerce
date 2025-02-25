@@ -3,6 +3,7 @@ import { Box, Image, Heading, Text, HStack, useColorModeValue, IconButton, useTo
     ModalFooter } from "@chakra-ui/react";
 import { useProductStore } from "../store/product";
 import { useState } from "react";
+import { FaCartPlus } from "react-icons/fa";
 
 const ProductCard = ({product}) => {
     const [updatedProduct, setUpdatedProduct] = useState(product);
@@ -83,6 +84,7 @@ const ProductCard = ({product}) => {
 						onClick={() => handleDeleteProduct(product._id)}
 						colorScheme='red'
 					/>
+					<IconButton icon={<FaCartPlus />} colorScheme='green'/>
                 </HStack>
             </Box>
 
