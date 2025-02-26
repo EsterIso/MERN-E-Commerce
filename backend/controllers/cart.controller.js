@@ -28,7 +28,7 @@ export const createCart = async (req, res) => {
         // Return the cart details
         res.status(200).json({ message: 'Cart exists or was created', cart });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to create or fetch cart', details: err.message });
+        res.status(500).json({ error: 'Failed to create or fetch cart', details: error.message });
     }
 };
 
@@ -59,7 +59,7 @@ export const getCart = async(req, res) => {
 
 export const addToCart = async(req, res) => {
     const customerId = req.auth.userId; // Clerk User ID
-    const { productId, image, quantity, price } = req.body;
+    const { productId, name, image, quantity, price } = req.body;
 
     try {
         //find the cart for the user
@@ -79,7 +79,7 @@ export const addToCart = async(req, res) => {
         const itemIndex = cart.items.findIndex(item => item.productID === productId);
         if (itemIndex === -1) {
             //item doesnt exist in cart, add it
-            cart.items.push({ productID: productId, image, quantity, price });
+            cart.items.push({ productID: productId, name, image, quantity, price });
         } else {
             //Item already exist, update quantity
             cart.items[itemIndex].quantity += quantity;
@@ -89,9 +89,10 @@ export const addToCart = async(req, res) => {
         cart.totalPrice = cart.items.reduce((total, item) => total + item.quantity * item.price, 0);
 
         await cart.save();
-        res.status(200).json({ message: 'Item added to cart', cart });
+        res.status(200).json({ success: true, message: 'Item added to cart', cart });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to add item to cart', details: err.message });
+        console.error("Error adding to cart:", error);
+        res.status(500).json({ success: false, message: 'Failed to add item to cart', details: error.message });
     }
 };
 
@@ -105,12 +106,13 @@ export const removeItemFromCart = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Cart not found' })
         }
         cart.items = cart.items.filter(item => item._id.toString() !== itemId);
-        cart.totalPrice = calculateTotalPrice(cart.items);
+        // Calculate new total price
+        cart.totalPrice = cart.items.reduce((total, item) => total + (item.price * item.quantity), 0);
 
         await cart.save();
-        res.status(200).json({ success: true, data: cart });
+        res.status(200).json({ success: true, message: 'Item removed from cart successfully', data: cart });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Error removing item from cart', error: err.message});
+        res.status(500).json({ success: false, message: 'Error removing item from cart', error: error.message});
     }
 };
 

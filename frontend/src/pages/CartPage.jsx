@@ -208,8 +208,9 @@ return (
                      <Box key={item._id} p={4} borderWidth="1px" borderRadius="md">
                          <Flex justify="space-between" align="center">
                              <Box flex="1">
-                              <Image src={ item.image } alt={`Product ${item.productID}`} h={20} w='auto' objectFit='cover'/> 
-                              <Text fontWeight="bold">Product: {item.productID}</Text>
+                              <Image src={ item.image } alt={`Product ${item.name}`} h={20} w='auto' objectFit='cover'/> 
+                              <Text fontWeight="bold">Product: {item.name}</Text>
+                              <Text fontWeight="bold">ProductID: {item.productID}</Text>
                               <Text color="gray.600">${item.price.toFixed(2)}</Text>
                              </Box>
                              

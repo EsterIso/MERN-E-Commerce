@@ -34,6 +34,7 @@ const ProductCard = ({product}) => {
         try {
             const { success, message } = await addToCart(
                 product._id,
+                product.name,
 				product.image,
                 1, // Default quantity
                 product.price

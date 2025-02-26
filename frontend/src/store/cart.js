@@ -49,22 +49,22 @@ export const useCartStore = create((set, get) => ({
   },
   
   // Add an item to the cart
-  addToCart: async (productId, image, quantity, price) => {
+  addToCart: async (productId, name, image, quantity, price) => {
     try {
       const res = await fetch("/api/cart/items", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ productId, image, quantity, price })
+        body: JSON.stringify({ productId, name, image, quantity, price })
       });
       
       const data = await res.json();
       
-      if (data.message === 'Item added to cart' || data.success) {
+      if (data.success) {
         // Update the local cart state
-        set({ cart: data.cart || data.data });
-        return { success: true, message: "Item added to cart" };
+        set({ cart: data.cart });
+        return { success: true, message: data.message || "Item added to cart" };
       } else {
         return { success: false, message: data.message || 'Failed to add item to cart' };
       }

@@ -4,6 +4,8 @@ import CreatePage from './pages/CreatePage'
 import HomePage from "./pages/HomePage"
 import Navbar from "./components/Navbar"
 import CartPage from "./pages/CartPage"
+import CheckoutSuccessPage from "./pages/CheckoutSuccessPage"
+import CheckoutCancelPage from "./pages/CheckoutCancelPage"
 
 function App() {
 
@@ -15,6 +17,8 @@ function App() {
           <Route path="/" element={<HomePage />}/>
           <Route path="/create" element={<CreatePage />}/>
           <Route path="/cart" element={<CartPage />}/>
+          <Route path="/checkout/success" element={<CheckoutSuccessPage />}/>
+          <Route path="/checkout/cancel" element={<CheckoutCancelPage />}/>
         </Routes>
       </Box>
     </>
