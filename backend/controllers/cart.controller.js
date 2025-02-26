@@ -139,3 +139,34 @@ export const updateItemQuantity = async (req, res) => {
         res.status(500).json({ success: false, message: 'Error updating item quantity', error: err.message });
     }
 };
+
+export const clearCart = async (req, res) => {
+    const customerId = req.auth.userId;
+
+    try {
+        const cart = await Cart.findOne({ CustomerID: customerId });
+        
+        if (!cart) {
+            return res.status(404).json({ success: false, message: 'Cart not found' });
+        }
+        
+        // Clear all items from the cart
+        cart.items = [];
+        cart.totalPrice = 0;
+        
+        await cart.save();
+        
+        res.status(200).json({ 
+            success: true, 
+            message: 'Cart cleared successfully', 
+            data: cart 
+        });
+    } catch (error) {
+        console.log("Error clearing cart:", error.message);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error clearing cart', 
+            error: error.message 
+        });
+    }
+};
