@@ -6,6 +6,10 @@ export const createCart = async (req, res) => {
     try {
         const customerId = req.auth.userId;  // Get Clerk's user ID from the request
 
+        if (!customerId) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
         // Check if the user already has a cart
         let cart = await Cart.findOne({ CustomerID: customerId });
 

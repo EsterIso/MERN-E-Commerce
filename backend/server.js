@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { connectDB } from './config/db.js';
 import productRoutes from './routes/product.route.js';
 import cartRoutes from './routes/cart.route.js'
+import stripeRoute from './routes/stripe.routes.js'
 import { ClerkExpressWithAuth } from '@clerk/clerk-sdk-node';
 
 dotenv.config();
@@ -17,7 +18,9 @@ app.use(express.json());//allow us to accept json data in the req.body
 
 app.use('/api/products', productRoutes)
 
-app.use('api/cart', cartRoutes)
+app.use('/api/cart', cartRoutes)
+
+app.use('/api/stripe', stripeRoute);
 
 console.log(process.env.MONGODB_URI)
 
