@@ -49,14 +49,14 @@ export const useCartStore = create((set, get) => ({
   },
   
   // Add an item to the cart
-  addToCart: async (productId, quantity, price) => {
+  addToCart: async (productId, image, quantity, price) => {
     try {
       const res = await fetch("/api/cart/items", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ productId, quantity, price })
+        body: JSON.stringify({ productId, image, quantity, price })
       });
       
       const data = await res.json();

@@ -5,6 +5,7 @@ import { IoMoon } from "react-icons/io5"
 import { LuSun } from "react-icons/lu"
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { useState, useEffect } from 'react';
+import { FaShoppingCart  } from "react-icons/fa";
 
 const Navbar = () => {
   const {colorMode, toggleColorMode } = useColorMode();
@@ -32,7 +33,11 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    if (isCartCreated) return; // Avoid re-creating the cart if it's already created
+    // This will run only when the component mounts and user is signed in
+    // The actual check for sign-in state is handled by the <SignedIn> component
+    if (!isCartCreated) {
+      createCart();
+    }
   }, [isCartCreated]);
 
   return <Container maxW={"1140px"} px={4} >
@@ -65,6 +70,11 @@ const Navbar = () => {
       <Button onClick={toggleColorMode}>
         {colorMode === "light" ? <IoMoon/> : <LuSun size="20"/>}
       </Button>
+      <Link to={'/cart'}>
+        <Button > 
+          <FaShoppingCart fontSize={20}/>
+        </Button>
+      </Link>
       <SignedOut>
         <Button>
           <SignInButton />
@@ -72,8 +82,6 @@ const Navbar = () => {
       </SignedOut>
       <SignedIn>
         <UserButton />
-          {/* Call createCart if the user is signed in */}
-          { !isCartCreated && createCart() }
       </SignedIn>
     </HStack>
   </Flex>

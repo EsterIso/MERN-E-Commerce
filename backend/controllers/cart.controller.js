@@ -59,7 +59,7 @@ export const getCart = async(req, res) => {
 
 export const addToCart = async(req, res) => {
     const customerId = req.auth.userId; // Clerk User ID
-    const { productId, quantity, price } = req.body;
+    const { productId, image, quantity, price } = req.body;
 
     try {
         //find the cart for the user
@@ -79,7 +79,7 @@ export const addToCart = async(req, res) => {
         const itemIndex = cart.items.findIndex(item => item.productID === productId);
         if (itemIndex === -1) {
             //item doesnt exist in cart, add it
-            cart.items.push({ productID: productId, quantity, price });
+            cart.items.push({ productID: productId, image, quantity, price });
         } else {
             //Item already exist, update quantity
             cart.items[itemIndex].quantity += quantity;
@@ -119,27 +119,46 @@ export const updateItemQuantity = async (req, res) => {
     const { itemId } = req.params;
     const { quantity } = req.body;
 
-    try{
+    try {
+        // First find the user's cart
         const cart = await Cart.findOne({ CustomerID: customerId });
+        
         if (!cart) {
-            return res.status(404).json({ success: false, message: 'Cart not found' })
+            return res.status(404).json({ success: false, message: 'Cart not found' });
         }
 
-        cart.items = cart.items.find(item => item._id.toString() === itemId);
-        if(!item) {
+        // Find the index of the item in the cart
+        const itemIndex = cart.items.findIndex(item => item._id.toString() === itemId);
+        
+        // Check if the item exists in the cart
+        if (itemIndex === -1) {
             return res.status(404).json({ success: false, message: 'Item not found in cart' });
         }
 
-        item.quantity = quantity;
-        cart.totalPrice = calculateTotalPrice(cart.items);
+        // Update the quantity of the found item
+        cart.items[itemIndex].quantity = quantity;
+        
+        // Recalculate the total price
+        cart.totalPrice = cart.items.reduce((total, item) => total + item.quantity * item.price, 0);
 
+        // Save the updated cart
         await cart.save();
-        res.status(200).json({ success: true, data: cart });
+        
+        // Return success response with updated cart
+        res.status(200).json({ 
+            success: true, 
+            message: 'Item quantity updated successfully',
+            data: cart 
+        });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Error updating item quantity', error: err.message });
+        console.error('Error updating item quantity:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error updating item quantity', 
+            error: error.message 
+        });
     }
 };
-
 export const clearCart = async (req, res) => {
     const customerId = req.auth.userId;
 
