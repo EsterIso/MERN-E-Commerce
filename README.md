@@ -2,6 +2,10 @@
 
 A modern e-commerce application built with the MERN stack (MongoDB, Express, React, Node.js), featuring secure payments with Stripe and authentication with Clerk.
 
+## About This Project
+
+This e-commerce platform was developed as a learning project to deepen my understanding of the MERN stack and explore modern web technologies like Stripe for payment processing, Clerk for authentication, and Chakra UI for building responsive interfaces. While fully functional, this project represents my journey in mastering these technologies rather than a production-ready commercial solution.
+
 ![Product Store Screenshot](https://via.placeholder.com/800x400?text=Product+Store+Screenshot)
 
 ## Features
