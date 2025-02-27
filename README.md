@@ -27,7 +27,6 @@ This e-commerce platform was developed as a learning project to deepen my unders
 - Clerk Authentication
 - React Router
 - Zustand (State Management)
-- Framer Motion
 
 ### Backend
 - Node.js
